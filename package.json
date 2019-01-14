@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "scripts": {
-    "start:pm2": "pm2 start src/index.js -i max",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:pm2": "pm2 start dist/server.js -i max",
+    "build": "npm run build:ncc && npm run build:clean",
+    "build:ncc": "ncc build src/index.ts -o dist",
+    "build:gcc": "npx google-closure-compiler --js=./dist/index.js --js_output_file=./dist/server.js --compilation_level=ADVANCED",
+    "build:ug": "uglifyjs dist/index.js --compress --mangle --output=dist/server.js",
+    "build:clean": "rm -rf dist/migrate && rm -rf dist/seed"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -13,10 +20,15 @@
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
     "knex": "^0.16.3",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "pm2": "^3.2.7",
+    "spdy": "^4.0.0"
   },
-  "devDependencies": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/express": "^4.16.0",
+    "@types/express-graphql": "^0.6.2",
+    "@types/graphql": "^14.0.4",
+    "uglify-js": "^3.4.9"
+  }
 }
